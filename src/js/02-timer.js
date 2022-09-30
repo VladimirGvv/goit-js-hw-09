@@ -1,5 +1,6 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 
 const refs = {
     body: document.querySelector('body'),
@@ -16,7 +17,7 @@ const refs = {
 };
 
 
-refs.body.style.backgroundColor = 'yellow';
+refs.body.style.backgroundColor = 'aqua';
 refs.startBtn.style.backgroundColor = 'yellow';
 refs.timer.style.display = 'flex';
 refs.timer.style.marginTop = '15px';
@@ -48,7 +49,7 @@ const options = {
         
         if (selectedDates[0] <= date){
             
-            return window.alert('Please choose a date in the future');
+            return Notiflix.Notify.failure('Please choose a date in the future');
         } 
         refs.startBtn.disabled = false;
         deltaTime = selectedDates[0] - date;
