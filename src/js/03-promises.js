@@ -12,7 +12,7 @@ function onSubmit(evt) {
   
     let firstDelay = Number(inputDelay.value);
     const step = Number(inputDelayStep.value);
-  const amount = Number(inputAmount.value);
+    const amount = Number(inputAmount.value);
   
   for (let i = 1; i <= amount; i += 1) {
     createPromise(i, firstDelay)
@@ -26,21 +26,23 @@ function onSubmit(evt) {
           `❌ Rejected promise ${position} in ${delay}ms`
         );
       });
+  
     firstDelay += step;
+  };
 }
 
-function createPromise(position, delay) {
-  return new Promise((resolve, reject) => {
+  function createPromise(position, delay) {
+    return new Promise((resolve, reject) => {
   
-    const shouldResolve = Math.random() > 0.3;
-    setInterval(() => {
-      if (shouldResolve) {
-      resolve({position, delay})
+      const shouldResolve = Math.random() > 0.3;
+      setInterval(() => {
+        if (shouldResolve) {
+          resolve({ position, delay })
 
-    } else {
-      reject({position, delay})
+        } else {
+          reject({ position, delay })
+        }
+      }, delay);
+    })
+  
   }
-    }, delay);  
-})
-  
-}
