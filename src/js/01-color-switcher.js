@@ -5,7 +5,7 @@ const bodyStyle = document.querySelector('body');
 let colorId = null;
 let cheker = true;
 
-
+startBtn.disabled = true;
 
 startBtn.addEventListener('click', () => {
     if (cheker) {
