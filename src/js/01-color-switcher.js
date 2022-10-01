@@ -5,7 +5,7 @@ const bodyStyle = document.querySelector('body');
 let colorId = null;
 let cheker = true;
 
-startBtn.disabled = true;
+stopBtn.disabled = true;
 
 startBtn.addEventListener('click', () => {
     if (cheker) {
@@ -13,6 +13,8 @@ startBtn.addEventListener('click', () => {
         colorId = setInterval(() => {
             bodyStyle.style.backgroundColor = getRandomHexColor()
         }, 1000);
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
     }     
 });
 
@@ -20,6 +22,8 @@ startBtn.addEventListener('click', () => {
 stopBtn.addEventListener('click', () => {
     cheker = true;
     clearInterval(colorId);
+    stopBtn.disabled = true;
+    startBtn.disabled = false;
 });
 
 

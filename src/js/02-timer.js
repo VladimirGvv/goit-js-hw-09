@@ -16,28 +16,24 @@ const refs = {
     dataSeconds: document.querySelector('[data-seconds]'),
 };
 
-
 refs.body.style.backgroundColor = 'aqua';
 refs.startBtn.style.backgroundColor = 'yellow';
 refs.timer.style.display = 'flex';
 refs.timer.style.marginTop = '15px';
+refs.startBtn.disabled = true;
 
 for (const key of refs.fields) {
     key.style.display = 'flex';
     key.style.alignItems = 'center';
-    key.style.marginRight = '10px';
-
-    
+    key.style.marginRight = '10px'; 
 };
 
 for (const key of refs.label) {
-    key.style.marginLeft = '5px';
-    
+    key.style.marginLeft = '5px';  
 };
 
-let deltaTime = null;
-
-refs.startBtn.disabled = true;
+let selectedDate = null;
+let interval = null;
 
 const options = {
     enableTime: true,
@@ -45,40 +41,38 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        const date = new Date();
         
-        if (selectedDates[0] <= date){
-            
-            return Notiflix.Notify.failure('Please choose a date in the future');
-        } 
-        refs.startBtn.disabled = false;
-        deltaTime = selectedDates[0] - date;
-        
-       
-
+        if (selectedDates[0] <= new Date()){
+            refs.startBtn.disabled = true;
+            Notiflix.Notify.failure('Please choose a date in the future');
+            return clearInterval(interval);   
+        };
+        if (selectedDates[0] > new Date()){
+            refs.startBtn.disabled = false;
+        };
+    
+        selectedDate = selectedDates[0];
     },
 };
 
-refs.startBtn.addEventListener('click', () => {
+refs.startBtn.addEventListener('click', startTimer);
+
+function startTimer() {
+    interval = setInterval(timer, 1000);
     refs.startBtn.disabled = true;
-    timer.start();
-})
+};
 
-
-const timer = {
-    isActive: false,
-    start() {
-        if (this.isActive) {
-            return
-        }
-        this.isActive = true;
-        setInterval(() => {
+function timer () {
+    let deltaTime = selectedDate - new Date();
             const time = convertMs(deltaTime);
-            deltaTime -= 1000;
+
+            if (deltaTime <= 0) {
+                clearInterval(interval);
+                return;
+            }
             updateClockface(time);
-        }, 1000);
-    }
-}
+};
+
 
 function updateClockface({ days, hours, minutes, seconds }) {
     refs.dataSeconds.textContent = `${seconds}`;
@@ -89,7 +83,7 @@ function updateClockface({ days, hours, minutes, seconds }) {
 
 function pad(value) {
     return String(value).padStart(2, '0');
-}
+};
 
 function convertMs(ms) {
   const second = 1000;
